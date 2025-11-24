@@ -1,3 +1,2 @@
-
 import 'package:flutter/material.dart';
-void main() => runApp(const MaterialApp(home: Scaffold(body: Center(child: Text('Inventory App placeholder')))));
+void main()=>runApp(MaterialApp(home: Scaffold(body: Center(child: Text("Inventory App")))));

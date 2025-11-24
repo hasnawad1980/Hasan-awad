@@ -1,42 +1,11 @@
 workflows:
-  android_debug_apk:
-    name: Android Debug APK (phone-only)
-    max_build_duration: 60
+  android_debug_simple:
+    name: Android Debug APK (simple)
     environment:
       flutter: stable
     scripts:
-      - name: Flutter pub get
-        script: |
-          flutter --version
-          flutter pub get
-      - name: Build debug APK
-        script: |
-          flutter build apk --debug
+      - script: flutter create .
+      - script: flutter pub get
+      - script: flutter build apk --debug
     artifacts:
       - build/app/outputs/flutter-apk/app-debug.apk
-
-  android_release_apk_signed:
-    name: Android Release APK (signed)
-    max_build_duration: 60
-    environment:
-      flutter: stable
-      groups:
-        - keystore_credentials
-    scripts:
-      - name: Decode keystore
-        script: |
-          echo "$CM_KEYSTORE" | base64 --decode > android/app/upload.keystore
-      - name: Set up key.properties
-        script: |
-          cat > android/key.properties <<'EOF'
-          storePassword=$CM_KEYSTORE_PASSWORD
-          keyPassword=$CM_KEY_ALIAS_PASSWORD
-          keyAlias=$CM_KEY_ALIAS_USERNAME
-          storeFile=app/upload.keystore
-          EOF
-      - name: Flutter pub get
-        script: flutter pub get
-      - name: Build release APK
-        script: flutter build apk --release
-    artifacts:
-      - build/app/outputs/flutter-apk/app-release.apk
